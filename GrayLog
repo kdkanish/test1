@@ -1,0 +1,69 @@
+Download & install java package
+  $sudo yum install java-1.8.0-openjdk-headless.x86_64
+  $sudo yum install epel-release
+  $sudo yum install pwgen
+
+Create and edit file [MongoDB]
+  $vim /etc/yum.repos.d/mongodb-org.repo
+      [mongodb-org-4.2]
+      name=MongoDB Repository
+      baseurl=https://repo.mongodb.org/yum/redhat/$releasever/mongodb-org/4.2/x86_64/
+      gpgcheck=1
+      enabled=1
+      gpgkey=https://www.mongodb.org/static/pgp/server-4.2.asc
+      
+  $sudo yum install mongodb-org
+$ sudo systemctl daemon-reload
+$ sudo systemctl enable mongod.service
+$ sudo systemctl start mongod.service
+$ sudo systemctl --type=service --state=active | grep mongod
+
+Create and edit file [ElasticSearch]
+  rpm --import https://artifacts.elastic.co/GPG-KEY-elasticsearch
+  vim /etc/yum.repos.d/elasticsearch.repo
+      [elasticsearch-7.x]
+      name=Elasticsearch repository for 7.x packages
+      baseurl=https://artifacts.elastic.co/packages/oss-7.x/yum
+      gpgcheck=1
+      gpgkey=https://artifacts.elastic.co/GPG-KEY-elasticsearch
+      enabled=1
+      autorefresh=1
+      type=rpm-md
+$sudo yum install elasticsearch-oss
+
+Edit /etc/elasticsearch/elasticsearch.yml
+      change [Cluster.Name:graylog]
+add line on /etc/elasticsearch/elasticsearch.yml
+      action.auto_create_index: flase
+      
+$ sudo systemctl daemon-reload
+$ sudo systemctl enable elasticsearch.service
+$ sudo systemctl restart elasticsearch.service
+$ sudo systemctl --type=service --state=active | grep elasticsearch
+
+Install Graylog.
+$ sudo rpm -Uvh https://packages.graylog2.org/repo/packages/graylog-4.0-repository_latest.rpm
+
+$sudo yum install graylog-server      OR
+$sudo yum install graylog-server graylog-enterprise-plugins graylog-integrations-plugins graylog-enterprise-integrations-plugins
+
+Edit graylog Conf file
+$vim /etc/graylog/server/server.conf
+Enter password_secret:
+to enter password secret following steps should be taken:
+        1 :shell
+        2 :pwgen -N 1 -s 96
+        3 :copy line and paste on password_secret
+ To enter root_password_sha2
+        1 :Shell
+        2 : echo -n "Enter Password: " && head -1 </dev/stdin | tr -d '\n' | sha256sum | cut -d" " -f1
+        3 : enter admin to generate password
+ Change UTC_Timezone to :Asia/Kathmandu
+ Change http_bind_address : Host ip address. 
+ 
+ 
+ 
+ 
+ 
+ 
+
