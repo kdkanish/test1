@@ -1,3 +1,10 @@
+System Requirement
+        : Recommended: 4 Core CPU
+        : Recommended: 8 Gb Ram
+        : Kernel Version: Linux kernel 3.9 required to run upd inputs 
+        
+
+
 Download & install java package
   $sudo yum install java-1.8.0-openjdk-headless.x86_64
   $sudo yum install epel-release
@@ -60,6 +67,24 @@ to enter password secret following steps should be taken:
         3 : enter admin to generate password
  Change UTC_Timezone to :Asia/Kathmandu
  Change http_bind_address : Host ip address. 
+ firewall-cmd -zone=public --add-port=9000
+ 
+ 
+ Configuring rsyslog
+          vim /etc/rsyslog.conf
+          *.* @192.168.1.1:1514;RSYSLOG_SyslogProtocol23Format
+          
+          iptables -t nat -A PREROUTING -p tcp --dport 514 -j REDIRECT --to 1514
+          iptables -t nat -A PREROUTING -p udp --dport 514 -j REDIRECT --to 1514
+          iptables-save > /etc/sysconfig/iptables
+          
+          ss -nl |grep 9000 
+          
+ Configure on windws nxlog
+         download and install nxlog
+         
+ 
+
  
  
  
